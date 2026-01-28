@@ -7,6 +7,7 @@ import sys
 import traceback
 
 from PyQt6.QtCore import QCoreApplication, QLibraryInfo
+import PyQt6
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
@@ -24,11 +25,15 @@ def _configure_logging() -> None:
 
 def _configure_qt_plugins() -> None:
     """Ensure Qt can locate platform plugins on macOS."""
-    plugins_path = QLibraryInfo.path(QLibraryInfo.LibraryPath.PluginsPath)
-    if plugins_path:
-        QCoreApplication.addLibraryPath(plugins_path)
-        os.environ.setdefault("QT_PLUGIN_PATH", plugins_path)
-        os.environ.setdefault("QT_QPA_PLATFORM_PLUGIN_PATH", plugins_path)
+    qt_pkg_base = os.path.dirname(PyQt6.__file__)
+    bundled_plugins = os.path.join(qt_pkg_base, "Qt6", "plugins")
+    candidates = [bundled_plugins, QLibraryInfo.path(QLibraryInfo.LibraryPath.PluginsPath)]
+    for plugins_path in candidates:
+        if plugins_path and os.path.isdir(plugins_path):
+            QCoreApplication.addLibraryPath(plugins_path)
+            os.environ["QT_PLUGIN_PATH"] = plugins_path
+            os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = plugins_path
+            break
 
 
 def _handle_exception(exc_type, exc_value, exc_traceback) -> None:
