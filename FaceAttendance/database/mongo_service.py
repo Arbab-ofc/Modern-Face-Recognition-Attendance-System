@@ -186,7 +186,7 @@ class MongoDBService:
 
     def student_exists(self, student_id: str) -> bool:
         """Check if a student ID already exists."""
-        if not self._students_collection:
+        if self._students_collection is None:
             return False
         try:
             return self._students_collection.count_documents({"student_id": student_id}) > 0
