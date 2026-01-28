@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import logging
+import os
 import sys
 import traceback
 
+from PyQt6.QtCore import QCoreApplication, QLibraryInfo
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
@@ -20,6 +22,15 @@ def _configure_logging() -> None:
     )
 
 
+def _configure_qt_plugins() -> None:
+    """Ensure Qt can locate platform plugins on macOS."""
+    plugins_path = QLibraryInfo.path(QLibraryInfo.LibraryPath.PluginsPath)
+    if plugins_path:
+        QCoreApplication.addLibraryPath(plugins_path)
+        os.environ.setdefault("QT_PLUGIN_PATH", plugins_path)
+        os.environ.setdefault("QT_QPA_PLATFORM_PLUGIN_PATH", plugins_path)
+
+
 def _handle_exception(exc_type, exc_value, exc_traceback) -> None:
     logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
     message = "An unexpected error occurred. Please check logs for details."
@@ -32,6 +43,7 @@ def _handle_exception(exc_type, exc_value, exc_traceback) -> None:
 def main() -> int:
     _configure_logging()
     sys.excepthook = _handle_exception
+    _configure_qt_plugins()
 
     app = QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
