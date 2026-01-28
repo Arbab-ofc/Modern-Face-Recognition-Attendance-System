@@ -1,0 +1,7 @@
+[project]
+name = "face-attendance-backend"
+version = "1.0.0"
+requires-python = ">=3.10"
+
+[tool.setuptools]
+packages = ["backend", "backend.app", "backend.app.services", "backend.app.utils", "backend.app.models"]

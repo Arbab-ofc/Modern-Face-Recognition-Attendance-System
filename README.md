@@ -22,7 +22,11 @@ A full-stack web application for real-time face recognition attendance tracking.
    ```bash
    pip install -r requirements.txt
    ```
-3. Run the API from the repo root:
+3. Install backend as a package from the repo root:
+   ```bash
+   pip install -e backend
+   ```
+4. Run the API:
    ```bash
    uvicorn backend.app.main:app --reload --port 8000
    ```
