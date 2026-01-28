@@ -489,6 +489,8 @@ class DataTable(QTableWidget):
     def set_empty_message(self, message: str) -> None:
         """Display a single-row empty state message."""
         self.clearContents()
+        if self.columnCount() == 0:
+            self.setColumnCount(1)
         self.setRowCount(1)
         item = QTableWidgetItem(message)
         item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
