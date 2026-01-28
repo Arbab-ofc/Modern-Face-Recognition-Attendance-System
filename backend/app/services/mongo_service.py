@@ -13,8 +13,8 @@ from pymongo.errors import (
     ServerSelectionTimeoutError,
 )
 
-from app.utils.constants import DATABASE
-from app.utils.helpers import binary_to_numpy, get_current_date, get_current_time
+from backend.app.utils.constants import DATABASE
+from backend.app.utils.helpers import binary_to_numpy, get_current_date, get_current_time
 
 
 logger = logging.getLogger(__name__)

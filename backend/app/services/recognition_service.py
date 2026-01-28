@@ -8,8 +8,8 @@ import cv2
 import face_recognition
 import numpy as np
 
-from app.services.mongo_service import get_db_service
-from app.utils.constants import FACE_RECOGNITION
+from backend.app.services.mongo_service import get_db_service
+from backend.app.utils.constants import FACE_RECOGNITION
 
 
 @dataclass

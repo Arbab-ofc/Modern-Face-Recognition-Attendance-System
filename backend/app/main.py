@@ -7,17 +7,17 @@ from typing import List
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.models.schemas import (
+from backend.app.models.schemas import (
     AttendanceRecordResponse,
     RecognitionFace,
     RecognitionResponse,
     StatusResponse,
     StudentResponse,
 )
-from app.services.mongo_service import get_db_service
-from app.services.recognition_service import FaceRecognitionService
-from app.utils.constants import APP_NAME, APP_VERSION
-from app.utils.helpers import (
+from backend.app.services.mongo_service import get_db_service
+from backend.app.services.recognition_service import FaceRecognitionService
+from backend.app.utils.constants import APP_NAME, APP_VERSION
+from backend.app.utils.helpers import (
     get_current_date,
     image_bytes_to_bgr,
     numpy_to_binary,
