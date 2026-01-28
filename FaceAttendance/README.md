@@ -86,3 +86,6 @@ Specify the license for this project.
 - No emojis anywhere in codebase
 - All icons render correctly
 - Error handling shows user-friendly messages
+
+## Release
+- v1.0.0
