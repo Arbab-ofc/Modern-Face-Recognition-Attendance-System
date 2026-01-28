@@ -95,7 +95,7 @@ class MongoDBService:
 
     def add_student(self, student: Student) -> Tuple[bool, str]:
         """Add a new student to the database."""
-        if not self._students_collection:
+        if self._students_collection is None:
             return False, MESSAGES.DATABASE_ERROR
         if self.student_exists(student.student_id):
             return False, MESSAGES.DUPLICATE_STUDENT
@@ -110,7 +110,7 @@ class MongoDBService:
 
     def get_student_by_id(self, student_id: str) -> Optional[Student]:
         """Fetch a student by ID."""
-        if not self._students_collection:
+        if self._students_collection is None:
             return None
         try:
             doc = self._students_collection.find_one({"student_id": student_id})
@@ -121,7 +121,7 @@ class MongoDBService:
 
     def get_all_students(self) -> List[Student]:
         """Fetch all students."""
-        if not self._students_collection:
+        if self._students_collection is None:
             return []
         try:
             return [Student.from_document(doc) for doc in self._students_collection.find()]
@@ -131,7 +131,7 @@ class MongoDBService:
 
     def get_all_face_encodings(self) -> List[Tuple[str, str, object]]:
         """Return all face encodings for recognition."""
-        if not self._students_collection:
+        if self._students_collection is None:
             return []
         try:
             query = {"face_encoding": {"$exists": True}}
@@ -146,7 +146,7 @@ class MongoDBService:
 
     def update_student(self, student: Student) -> Tuple[bool, str]:
         """Update an existing student."""
-        if not self._students_collection:
+        if self._students_collection is None:
             return False, MESSAGES.DATABASE_ERROR
         try:
             result = self._students_collection.update_one(
@@ -163,7 +163,7 @@ class MongoDBService:
 
     def delete_student(self, student_id: str) -> Tuple[bool, str]:
         """Delete a student by ID."""
-        if not self._students_collection:
+        if self._students_collection is None:
             return False, MESSAGES.DATABASE_ERROR
         try:
             result = self._students_collection.delete_one({"student_id": student_id})
@@ -195,7 +195,7 @@ class MongoDBService:
 
     def mark_attendance(self, record: AttendanceRecord) -> Tuple[bool, str]:
         """Insert a new attendance record if not already marked."""
-        if not self._attendance_collection:
+        if self._attendance_collection is None:
             return False, MESSAGES.DATABASE_ERROR
         if self.has_attendance_today(record.student_id):
             return False, MESSAGES.DUPLICATE_ATTENDANCE
@@ -210,7 +210,7 @@ class MongoDBService:
 
     def get_attendance_by_date(self, date_str: str) -> List[AttendanceRecord]:
         """Return attendance records for a specific date."""
-        if not self._attendance_collection:
+        if self._attendance_collection is None:
             return []
         try:
             docs = self._attendance_collection.find({"date": date_str}).sort("time", -1)
@@ -221,7 +221,7 @@ class MongoDBService:
 
     def get_attendance_by_filter(self, filter_obj: AttendanceFilter) -> List[AttendanceRecord]:
         """Return attendance records by filter."""
-        if not self._attendance_collection:
+        if self._attendance_collection is None:
             return []
         try:
             docs = self._attendance_collection.find(filter_obj.build()).sort("date", -1)
@@ -232,7 +232,7 @@ class MongoDBService:
 
     def has_attendance_today(self, student_id: str) -> bool:
         """Check if attendance already exists for the given student today."""
-        if not self._attendance_collection:
+        if self._attendance_collection is None:
             return False
         try:
             return (
@@ -250,7 +250,7 @@ class MongoDBService:
 
     def get_attendance_by_date_range(self, start: str, end: str) -> List[AttendanceRecord]:
         """Return attendance records for a date range."""
-        if not self._attendance_collection:
+        if self._attendance_collection is None:
             return []
         try:
             query = {"date": {"$gte": start, "$lte": end}}
@@ -264,7 +264,7 @@ class MongoDBService:
         self, student_id: str, limit: int = 20
     ) -> List[AttendanceRecord]:
         """Return a student's recent attendance history."""
-        if not self._attendance_collection:
+        if self._attendance_collection is None:
             return []
         try:
             docs = (
