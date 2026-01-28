@@ -176,7 +176,7 @@ class MongoDBService:
 
     def get_student_count(self) -> int:
         """Return the number of students."""
-        if not self._students_collection:
+        if self._students_collection is None:
             return 0
         try:
             return self._students_collection.count_documents({})
