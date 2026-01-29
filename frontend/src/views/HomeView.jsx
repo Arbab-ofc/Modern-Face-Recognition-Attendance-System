@@ -1,27 +1,21 @@
 import React from "react";
+import PublicShell from "../components/PublicShell.jsx";
 
 export default function HomeView({ onSignIn, onSignUp }) {
   return (
-    <div className="home-shell">
-      <header className="home-nav">
-        <div className="home-logo">
-          <span className="home-logo-mark">FA</span>
-          <div>
-            <div className="home-logo-title">Face Attendance</div>
-            <div className="home-logo-subtitle">Modern operations, human-friendly.</div>
-          </div>
-        </div>
-        <div className="home-nav-actions">
+    <PublicShell
+      actions={
+        <>
           <button className="button" type="button" onClick={onSignIn}>
             Sign in
           </button>
           <button className="button primary" type="button" onClick={onSignUp}>
             Create account
           </button>
-        </div>
-      </header>
-
-      <main className="home-hero">
+        </>
+      }
+    >
+      <div className="home-hero">
         <div className="home-hero-grid">
           <div className="home-hero-copy">
             <div className="home-pill">No login required to explore</div>
@@ -143,7 +137,7 @@ export default function HomeView({ onSignIn, onSignUp }) {
             </button>
           </div>
         </section>
-      </main>
-    </div>
+      </div>
+    </PublicShell>
   );
 }
